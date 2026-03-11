@@ -33,6 +33,16 @@ node parsePatch.js fixtures/26.5.md > output.json
 
 # Full codebase uploaded. 
 
+```git
+modified:   LOL.PATCH.NOTES.READ.md
+new file:   files/26.5.json
+new file:   files/README.md
+new file:   files/alignment.js
+new file:   files/champions.js
+new file:   files/cleanText.js
+new file:   files/items.js
+```
+
 Let me assemble the project, wire the pipeline, test it against 26.5, and integrate with the display.Now let me save the 26.5 markdown content and run the parser pipeline against it.Pipeline runs. 14 champions, 2 items, 12 systems, 32 stats extracted. Let me capture the bugs and fix them.Six bugs found. Let me fix the critical ones in the pipeline.Now update champion interpreter to handle array returns from parseStatLine:Now fix role detection and verdict logic:Compound decomposition working — Garen E now has `Damage per spin` (base, identical) + `Damage per spin (ratio)` (the actual change). Pipeline is solid. Let me save the output and package.Assembled, tested, and bugfixed the full pipeline. Here's what happened:
 
 **Pipeline validated** against 26.5 markdown → 14 champions, 35 stats, 2 items, 12 systems extracted. The `aligned_series` schema from the SEARCH doc architecture is fully operational — breakpoint types (`spell_rank`, `champion_level`, `game_time`) detected correctly, Akali's `TIME ⇒ LEVEL` transition preserved.

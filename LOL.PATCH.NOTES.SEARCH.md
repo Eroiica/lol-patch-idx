@@ -683,3 +683,391 @@ If you want, also tell me runtime target:
 * Python (BeautifulSoup + Playwright fallback)
 
 Upload the files and I’ll go straight into a proper PR-style review.
+
+---
+
+Got it. I can lay out the refactor toward **DOM → AST → Interpreter** right now (as a concrete structure + code skeleton you can drop into your repo), but I *still* can’t open your current `patch-parser*.jsx` because the uploaded files have expired on my side. If you want me to actually rewrite your existing code (not just provide the new architecture), please re-upload the parser file afterward and I’ll map your current functions into this structure.
+
+Below is the refactor plan + a working skeleton (JS/TS-flavored) that supports the “alignment table” cases and keeps the rest of the parser resilient.
+
+---
+
+# Target architecture
+
+## Stage 1 — DOM Loader
+
+Inputs: URL (or raw HTML)
+Output: `Document` (Cheerio/JSDOM nodes)
+
+Responsibilities:
+
+* Fetch HTML (static first)
+* Optional headless fallback only if validation fails
+* Return `{ url, html, $ }`
+
+## Stage 2 — DOM Normalizer → Linear “Blocks”
+
+Input: DOM
+Output: ordered `Block[]`
+
+Blocks are small, stable primitives:
+
+* `heading` (level 2–4+)
+* `paragraph`
+* `listItem`
+* `table` (real `<table>` or div-grid “pseudo table”)
+* `callout` (optional)
+* `hr` (optional)
+
+Each block carries:
+
+* clean text
+* raw html snapshot (optional)
+* source location hints (css path / index) for debugging
+
+## Stage 3 — Blocks → AST (Heading tree)
+
+Input: `Block[]`
+Output: `PatchAst`
+
+AST nodes:
+
+* `Root`
+* `Section` (from headings; contains children)
+* `ContentBlock` leaves (paragraph/list/table…)
+
+This stage is *pure structure*; no League-specific logic.
+
+## Stage 4 — Interpreters (League-specific)
+
+Input: `PatchAst`
+Output: `PatchData` (your JSON schema)
+
+Interpreters are pluggable:
+
+* `ChampionsInterpreter`
+* `ItemsInterpreter`
+* `SystemsInterpreter`
+* `GenericSectionInterpreter` (fallback)
+* `AlignmentTableInterpreter` (special leaf parser used by others)
+
+---
+
+# Folder layout
+
+```
+src/
+  fetch/
+    fetchHtml.ts
+    validatePage.ts
+  normalize/
+    domToBlocks.ts
+    cleanText.ts
+    detectPseudoTables.ts
+  ast/
+    blocksToAst.ts
+    astTypes.ts
+  interpret/
+    index.ts
+    champions.ts
+    items.ts
+    systems.ts
+    generic.ts
+    alignment.ts
+  schema/
+    patchTypes.ts
+  cli/
+    parsePatch.ts
+```
+
+---
+
+# Core types
+
+```ts
+// ast/astTypes.ts
+export type Block =
+  | { kind: "heading"; level: number; text: string; html?: string }
+  | { kind: "paragraph"; text: string; html?: string }
+  | { kind: "listItem"; text: string; html?: string }
+  | { kind: "table"; grid: string[][]; html?: string; meta?: any };
+
+export type AstNode =
+  | { kind: "root"; children: AstNode[] }
+  | { kind: "section"; level: number; title: string; children: AstNode[] }
+  | { kind: "content"; block: Block };
+
+export type PatchAst = AstNode; // root node
+```
+
+---
+
+# Stage 2: DOM → Blocks (normalizer)
+
+### Key rule: preserve reading order
+
+Don’t try to “parse champions” here. Just emit blocks in the order they appear.
+
+```ts
+// normalize/domToBlocks.ts
+import { cleanText } from "./cleanText";
+import { detectPseudoTables } from "./detectPseudoTables";
+
+export function domToBlocks($: any): Block[] {
+  const blocks: Block[] = [];
+
+  // 1) Narrow to the article body. Adjust selectors to Riot site:
+  const $article = $("article").first().length ? $("article").first() : $("main");
+
+  // 2) Walk elements in DOM order
+  $article.find("h2,h3,h4,p,li,table,section,div").each((_, el) => {
+    const tag = el.tagName?.toLowerCase?.() ?? el.name?.toLowerCase?.();
+
+    if (tag === "h2" || tag === "h3" || tag === "h4") {
+      blocks.push({
+        kind: "heading",
+        level: Number(tag.slice(1)),
+        text: cleanText($(el).text()),
+        html: $.html(el),
+      });
+      return;
+    }
+
+    if (tag === "p") {
+      const text = cleanText($(el).text());
+      if (text) blocks.push({ kind: "paragraph", text, html: $.html(el) });
+      return;
+    }
+
+    if (tag === "li") {
+      const text = cleanText($(el).text());
+      if (text) blocks.push({ kind: "listItem", text, html: $.html(el) });
+      return;
+    }
+
+    if (tag === "table") {
+      const grid = $(el)
+        .find("tr")
+        .toArray()
+        .map((tr: any) =>
+          $(tr)
+            .find("th,td")
+            .toArray()
+            .map((td: any) => cleanText($(td).text()))
+        );
+      blocks.push({ kind: "table", grid, html: $.html(el) });
+      return;
+    }
+
+    // 3) Pseudo-table detection (div-grid used for BEFORE/AFTER alignment blocks)
+    const pseudo = detectPseudoTables($, $(el));
+    if (pseudo) {
+      blocks.push(pseudo);
+      return;
+    }
+  });
+
+  return dedupeAdjacent(blocks);
+}
+
+function dedupeAdjacent(blocks: Block[]): Block[] {
+  const out: Block[] = [];
+  for (const b of blocks) {
+    const prev = out[out.length - 1];
+    if (prev?.kind === b.kind && "text" in prev && "text" in b && prev.text === b.text) continue;
+    out.push(b);
+  }
+  return out;
+}
+```
+
+---
+
+# Stage 3: Blocks → AST (heading tree)
+
+Classic stack-based builder:
+
+```ts
+// ast/blocksToAst.ts
+import { Block, AstNode } from "./astTypes";
+
+export function blocksToAst(blocks: Block[]): AstNode {
+  const root: AstNode = { kind: "root", children: [] };
+  const stack: AstNode[] = [root];
+
+  for (const block of blocks) {
+    if (block.kind === "heading") {
+      const node: AstNode = { kind: "section", level: block.level, title: block.text, children: [] };
+
+      while (stack.length > 1) {
+        const top = stack[stack.length - 1];
+        if (top.kind === "section" && top.level >= block.level) stack.pop();
+        else break;
+      }
+
+      stack[stack.length - 1].children.push(node);
+      stack.push(node);
+    } else {
+      stack[stack.length - 1].children.push({ kind: "content", block });
+    }
+  }
+
+  return root;
+}
+```
+
+---
+
+# Stage 4: Interpreters
+
+## Interpreter dispatcher
+
+```ts
+// interpret/index.ts
+import { PatchAst } from "../ast/astTypes";
+import { interpretChampions } from "./champions";
+import { interpretItems } from "./items";
+import { interpretSystems } from "./systems";
+import { interpretGenericSections } from "./generic";
+
+export function interpretPatch(ast: PatchAst) {
+  return {
+    meta: extractMeta(ast),
+    champions: interpretChampions(ast),
+    items: interpretItems(ast),
+    systems: interpretSystems(ast),
+    other: interpretGenericSections(ast),
+  };
+}
+
+function extractMeta(ast: PatchAst) {
+  // title/date extraction can be done either from DOM or first heading nodes
+  return {};
+}
+```
+
+---
+
+# Alignment Table Interpreter (the “Additional Bug Alignment Parser”)
+
+This is the critical leaf parser used by Champions/Items interpreters when they encounter a `table` block with BEFORE/AFTER.
+
+```ts
+// interpret/alignment.ts
+export function parseAlignedSeries(block: { kind: "table"; grid: string[][]; html?: string }) {
+  const flat = block.grid.flat().map(t => t.trim()).filter(Boolean);
+
+  // heuristics: must contain BEFORE and AFTER
+  const beforeIdx = flat.findIndex(t => /^before$/i.test(t));
+  const afterIdx = flat.findIndex(t => /^after$/i.test(t));
+  if (beforeIdx === -1 || afterIdx === -1) return null;
+
+  // Split into segments near markers
+  const beforeSeg = flat.slice(beforeIdx + 1, afterIdx);
+  const afterSeg = flat.slice(afterIdx + 1);
+
+  const before = extractSeries(beforeSeg);
+  const after = extractSeries(afterSeg);
+
+  const notes = extractNotes(flat);
+
+  return {
+    type: "aligned_series",
+    label: inferLabelFromContext(flat), // usually provided by surrounding H4/paragraph
+    unit: before.unit || after.unit || null,
+    before,
+    after,
+    notes_raw: notes,
+    alignment_warning:
+      (before.breakpoints && before.values.length !== before.breakpoints.values.length) ||
+      (after.breakpoints && after.values.length !== after.breakpoints.values.length)
+        ? "values_count_mismatch"
+        : undefined,
+  };
+}
+
+function extractSeries(tokens: string[]) {
+  // Separate value-ish tokens from note-ish tokens
+  const valueTokens = tokens.filter(t => looksLikeValue(t));
+  const noteTokens = tokens.filter(t => !looksLikeValue(t));
+
+  const norm = valueTokens.map(normalizeValueToken);
+  const unit = norm.find(n => n.unit)?.unit ?? null;
+
+  // parse breakpoints from notes if present
+  const breakpoint = noteTokens.map(parseBreakpoints).find(Boolean) ?? null;
+
+  return {
+    values: norm.map(n => n.value).filter(Boolean),
+    values_raw: valueTokens,
+    unit,
+    breakpoints: breakpoint,
+  };
+}
+
+function looksLikeValue(t: string) {
+  // IMPORTANT: allow ".9s"
+  return /^\.?\d+(\.\d+)?\s*[a-z%]*$/i.test(t);
+}
+
+function normalizeValueToken(t: string) {
+  const raw = t.trim();
+  const m = raw.match(/^(\.?[0-9]+(?:\.[0-9]+)?)\s*([a-z%]*)$/i);
+  if (!m) return { value: null, unit: null, raw };
+  let num = m[1];
+  if (num.startsWith(".")) num = "0" + num;
+  return { value: num, unit: m[2] || null, raw };
+}
+
+function parseBreakpoints(noteText: string) {
+  const s = noteText.toLowerCase();
+  if (s.includes("at game times")) {
+    const times = noteText.match(/\b\d+:\d{2}\b/g) || [];
+    return { type: "game_time", values: times };
+  }
+  if (s.includes("at levels")) {
+    const levels = (noteText.match(/\b\d+\b/g) || []).map(n => parseInt(n, 10));
+    return { type: "champion_level", values: levels };
+  }
+  if (s.includes("at ranks") || s.includes("spell rank") || s.includes("ranks")) {
+    const ranks = (noteText.match(/\b\d+\b/g) || []).map(n => parseInt(n, 10));
+    return { type: "spell_rank", values: ranks };
+  }
+  return null;
+}
+
+function extractNotes(allTokens: string[]) {
+  // capture "at game times..." etc
+  return allTokens.filter(t => /at (game times|levels|ranks)/i.test(t));
+}
+
+function inferLabelFromContext(_: string[]) {
+  return null; // set by caller using heading context
+}
+```
+
+**How to use it:** champions interpreter sees an H4 “Restealth Timer” then encounters a `table` block → call `parseAlignedSeries()` and attach `label="Restealth Timer"` + ability context.
+
+---
+
+# Champions interpreter (outline)
+
+* Find section title matching `Champions`
+* Each H3 child is champion node
+* Within champion: H4 = ability group (or base stats), and leaf blocks parsed accordingly:
+
+  * list items → delta parser (`A ⇒ B`)
+  * tables → alignment parser
+
+---
+
+# Next step (so I can actually refactor your existing code)
+
+Please re-upload (or paste) the current `patch-parser.jsx` you want rewritten into this architecture.
+
+Once I have it, I’ll return:
+
+* a PR-style review of what to delete/keep
+* the refactored module structure above
+* a concrete migration mapping: “old function X → new stage Y”
+* test fixtures including the Akali alignment case

@@ -1,0 +1,1244 @@
+{
+  "patch": "26.5",
+  "date": "2026-03-11",
+  "title": "League of Legends Patch 26.5 Notes",
+  "summary": "14 champion changes (4 buffs, 3 nerfs, 7 adjusted), 2 item changes, 12 system changes.",
+  "champions": [
+    {
+      "name": "Akali",
+      "role": "Unknown",
+      "verdict": "ADJUSTED",
+      "icon": "https://am-a.akamaihd.net/image?f=https://ddragon.leagueoflegends.com/cdn/16.4.1/img/champion/Akali.png",
+      "context": "Currently, Akali's re-stealth timer on her Shroud scales with game time. And since we've adjusted Summoner's Rift's pacing and League now has multiple modes with varying start times, we think everyone",
+      "changes": [
+        {
+          "ability": "W - Twilight Shroud",
+          "stats": [
+            {
+              "stat": "Restealth Timer",
+              "type": "aligned_series",
+              "unit": "s",
+              "before": {
+                "values": [
+                  "1s",
+                  ".9s",
+                  ".825s",
+                  ".725s",
+                  ".625s"
+                ],
+                "breakpoint_type": "game_time",
+                "breakpoints": [
+                  "0:00",
+                  "8:00",
+                  "11:00",
+                  "20:00",
+                  "30:00"
+                ]
+              },
+              "after": {
+                "values": [
+                  "1s",
+                  ".9s",
+                  ".825s",
+                  ".725s",
+                  ".625s"
+                ],
+                "breakpoint_type": "champion_level",
+                "breakpoints": [
+                  "1",
+                  "7",
+                  "10",
+                  "13",
+                  "16"
+                ]
+              }
+            },
+            {
+              "stat": "Restealth Timer (ratio)",
+              "type": "aligned_series",
+              "unit": null,
+              "before": {
+                "values": [
+                  "at game times 0:00",
+                  "8:00",
+                  "11:00",
+                  "20:00",
+                  "30:00"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              },
+              "after": {
+                "values": [
+                  "at levels 1",
+                  "7",
+                  "10",
+                  "13",
+                  "16"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Azir",
+      "role": "Unknown",
+      "verdict": "NERF",
+      "icon": "https://am-a.akamaihd.net/image?f=https://ddragon.leagueoflegends.com/cdn/16.4.1/img/champion/Azir.png",
+      "context": "Azir does a lot of things very well when played at a high level. In order to give his opponents some degree of counterplay we're bringing his health in the late game down a notch so assassin type cham",
+      "changes": [
+        {
+          "ability": "Base Stats",
+          "stats": [
+            {
+              "stat": "Health Growth",
+              "type": "scalar",
+              "unit": null,
+              "before": {
+                "value": "119"
+              },
+              "after": {
+                "value": "108"
+              },
+              "delta": "-11"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Garen",
+      "role": "Top",
+      "verdict": "BUFF",
+      "icon": "https://am-a.akamaihd.net/image?f=https://ddragon.leagueoflegends.com/cdn/16.4.1/img/champion/Garen.png",
+      "context": "Garen is moderately popular but statistically underpowered, and we'd like it if he was as powerful as other straightforward top lane juggernauts.",
+      "changes": [
+        {
+          "ability": "Q - Decisive Strike",
+          "stats": [
+            {
+              "stat": "Move speed duration",
+              "type": "aligned_series",
+              "unit": null,
+              "before": {
+                "values": [
+                  "1",
+                  "1.65",
+                  "2.3",
+                  "2.95",
+                  "3.6"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              },
+              "after": {
+                "values": [
+                  "1.4",
+                  "1.95",
+                  "2.5",
+                  "3.05",
+                  "3.6"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "ability": "E - Judgment",
+          "stats": [
+            {
+              "stat": "Damage per spin",
+              "type": "aligned_series",
+              "unit": null,
+              "before": {
+                "values": [
+                  "4",
+                  "7",
+                  "10",
+                  "13",
+                  "16"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              },
+              "after": {
+                "values": [
+                  "4",
+                  "7",
+                  "10",
+                  "13",
+                  "16"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            },
+            {
+              "stat": "Damage per spin (ratio)",
+              "type": "aligned_series",
+              "unit": "%",
+              "before": {
+                "values": [
+                  "+ 38",
+                  "41",
+                  "44",
+                  "47",
+                  "50%"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              },
+              "after": {
+                "values": [
+                  "+ 40",
+                  "43",
+                  "46",
+                  "49",
+                  "52%"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Kha'Zix",
+      "role": "Top / Jungle",
+      "verdict": "NERF",
+      "icon": "https://am-a.akamaihd.net/image?f=https://ddragon.leagueoflegends.com/cdn/16.4.1/img/champion/KhaZix.png",
+      "context": "Kha'Zix has evolved with the season changes and overcame all his worthy prey to take the top spot of solo queue junglers.",
+      "changes": [
+        {
+          "ability": "Base Stats",
+          "stats": [
+            {
+              "stat": "Move Speed",
+              "type": "scalar",
+              "unit": null,
+              "before": {
+                "value": "350"
+              },
+              "after": {
+                "value": "345"
+              },
+              "delta": "-5"
+            }
+          ]
+        },
+        {
+          "ability": "Q - Taste Their Fear",
+          "stats": [
+            {
+              "stat": "Bonus AD",
+              "type": "text",
+              "before": {
+                "value": "+ 110% (231% isolated bonus)"
+              },
+              "after": {
+                "value": "+ 105% (220.5% isolated bonus)"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Lee Sin",
+      "role": "Unknown",
+      "verdict": "BUFF",
+      "icon": "https://am-a.akamaihd.net/image?f=https://ddragon.leagueoflegends.com/cdn/16.4.1/img/champion/LeeSin.png",
+      "context": "Lee Sin has lost some of his skill and flair as of late and could use some help, so we're increasing his damage in a way that will benefit more skilled Lee Sin players.",
+      "changes": [
+        {
+          "ability": "Q - Sonic Wave / Resonating Strike",
+          "stats": [
+            {
+              "stat": "Base Damage",
+              "type": "aligned_series",
+              "unit": null,
+              "before": {
+                "values": [
+                  "60",
+                  "90",
+                  "120",
+                  "150",
+                  "180"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              },
+              "after": {
+                "values": [
+                  "65",
+                  "95",
+                  "125",
+                  "155",
+                  "185"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Lillia",
+      "role": "Unknown",
+      "verdict": "ADJUSTED",
+      "icon": "https://am-a.akamaihd.net/image?f=https://ddragon.leagueoflegends.com/cdn/16.4.1/img/champion/Lillia.png",
+      "context": "We overshot Lillia's Q nerf and historically gave her power in places she's less likely to appreciate.",
+      "changes": [
+        {
+          "ability": "Passive - Dream-Laden Bough",
+          "stats": [
+            {
+              "stat": "Monster heal bonus AP ratio",
+              "type": "scalar",
+              "unit": "%",
+              "before": {
+                "value": "9%"
+              },
+              "after": {
+                "value": "15%"
+              },
+              "delta": "+6%"
+            }
+          ]
+        },
+        {
+          "ability": "Q - Blooming Blows",
+          "stats": [
+            {
+              "stat": "Bonus AP ratio",
+              "type": "scalar",
+              "unit": "%",
+              "before": {
+                "value": "30%"
+              },
+              "after": {
+                "value": "35%"
+              },
+              "delta": "+5%"
+            }
+          ]
+        },
+        {
+          "ability": "R - Lilting Lullaby",
+          "stats": [
+            {
+              "stat": "Base damage",
+              "type": "aligned_series",
+              "unit": null,
+              "before": {
+                "values": [
+                  "100",
+                  "150",
+                  "200"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3"
+                ]
+              },
+              "after": {
+                "values": [
+                  "150",
+                  "200",
+                  "250"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3"
+                ]
+              }
+            },
+            {
+              "stat": "AP ratio",
+              "type": "scalar",
+              "unit": "%",
+              "before": {
+                "value": "45%"
+              },
+              "after": {
+                "value": "40%"
+              },
+              "delta": "-5%"
+            },
+            {
+              "stat": "Cooldown",
+              "type": "aligned_series",
+              "unit": "s",
+              "before": {
+                "values": [
+                  "150",
+                  "130",
+                  "110"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3"
+                ]
+              },
+              "after": {
+                "values": [
+                  "140",
+                  "120",
+                  "100"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mel",
+      "role": "Mid",
+      "verdict": "ADJUSTED",
+      "icon": "https://am-a.akamaihd.net/image?f=https://ddragon.leagueoflegends.com/cdn/16.4.1/img/champion/Mel.png",
+      "context": "Mel's recent update and follow-up balance work has succeeded in creating more counterplay. We're looking toward her proactive damage in the mid lane.",
+      "changes": [
+        {
+          "ability": "Passive - Searing Brilliance",
+          "stats": [
+            {
+              "stat": "Minion Damage Modifier",
+              "type": "scalar",
+              "unit": "x",
+              "before": {
+                "value": "0.6x"
+              },
+              "after": {
+                "value": "0.5x"
+              },
+              "delta": "-0.1x"
+            }
+          ]
+        },
+        {
+          "ability": "Q - Radiant Volley",
+          "stats": [
+            {
+              "stat": "Base Damage per Bolt",
+              "type": "aligned_series",
+              "unit": null,
+              "before": {
+                "values": [
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              },
+              "after": {
+                "values": [
+                  "5",
+                  "7",
+                  "9",
+                  "11",
+                  "13"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            },
+            {
+              "stat": "Total Q Base Damage",
+              "type": "aligned_series",
+              "unit": null,
+              "before": {
+                "values": [
+                  "90",
+                  "132",
+                  "176",
+                  "222",
+                  "270"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              },
+              "after": {
+                "values": [
+                  "90",
+                  "145",
+                  "200",
+                  "255",
+                  "310"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "ability": "R - Golden Eclipse",
+          "stats": [
+            {
+              "stat": "Initial Base Damage",
+              "type": "aligned_series",
+              "unit": null,
+              "before": {
+                "values": [
+                  "100",
+                  "150",
+                  "200"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3"
+                ]
+              },
+              "after": {
+                "values": [
+                  "125",
+                  "200",
+                  "275"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Neeko",
+      "role": "Support",
+      "verdict": "ADJUSTED",
+      "icon": "https://am-a.akamaihd.net/image?f=https://ddragon.leagueoflegends.com/cdn/16.4.1/img/champion/Neeko.png",
+      "context": "Neeko has a lot of things going for her right now: strong laning, teamfight utility, and vision control.",
+      "changes": [
+        {
+          "ability": "W - Shapeshifter",
+          "stats": [
+            {
+              "stat": "Slightly-Less-Tricksy-Neekoses",
+              "type": "text",
+              "before": {
+                "value": "—"
+              },
+              "after": {
+                "value": "Cooldown now starts on clone expiration, instead of on cast"
+              }
+            },
+            {
+              "stat": "Fun Eliminated",
+              "type": "text",
+              "before": {
+                "value": "—"
+              },
+              "after": {
+                "value": "Neeko can no longer use Ctrl+5, which plays the joke expression for clone only."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Nocturne",
+      "role": "Jungle",
+      "verdict": "BUFF",
+      "icon": "https://am-a.akamaihd.net/image?f=https://ddragon.leagueoflegends.com/cdn/16.4.1/img/champion/Nocturne.png",
+      "context": "Nocturne's underperforming considering how easy to pick up and play he is in the jungle.",
+      "changes": [
+        {
+          "ability": "Passive - Umbra Blades",
+          "stats": [
+            {
+              "stat": "Cooldown",
+              "type": "scalar",
+              "unit": null,
+              "before": {
+                "value": "13"
+              },
+              "after": {
+                "value": "12"
+              },
+              "delta": "-1"
+            }
+          ]
+        },
+        {
+          "ability": "Q - Duskbringer",
+          "stats": [
+            {
+              "stat": "Bonus move speed",
+              "type": "aligned_series",
+              "unit": "%",
+              "before": {
+                "values": [
+                  "15",
+                  "20",
+                  "25",
+                  "30",
+                  "35%"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              },
+              "after": {
+                "values": [
+                  "20",
+                  "25",
+                  "30",
+                  "35",
+                  "40%"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orianna",
+      "role": "Mid",
+      "verdict": "NERF",
+      "icon": "https://am-a.akamaihd.net/image?f=https://ddragon.leagueoflegends.com/cdn/16.4.1/img/champion/Orianna.png",
+      "context": "Orianna has been one of the strongest champions in the mid lane as of late.",
+      "changes": [
+        {
+          "ability": "Q - Command: Attack",
+          "stats": [
+            {
+              "stat": "Cooldown",
+              "type": "aligned_series",
+              "unit": "s",
+              "before": {
+                "values": [
+                  "6",
+                  "5.25",
+                  "4.5",
+                  "3.75",
+                  "3"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              },
+              "after": {
+                "values": [
+                  "7",
+                  "6",
+                  "5",
+                  "4",
+                  "3"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Samira",
+      "role": "Bot",
+      "verdict": "ADJUSTED",
+      "icon": "https://am-a.akamaihd.net/image?f=https://ddragon.leagueoflegends.com/cdn/16.4.1/img/champion/Samira.png",
+      "context": "We're giving Samira some love in the form of QoL and minor bugfixing around her Q in bot lane.",
+      "changes": [
+        {
+          "ability": "Q - Flair",
+          "stats": [
+            {
+              "stat": "The Right Tool for the Job",
+              "type": "text",
+              "before": {
+                "value": "—"
+              },
+              "after": {
+                "value": "Samira Q will now do multiple additional checks to see if there are units on both the right and left of her."
+              }
+            },
+            {
+              "stat": "Itchy Trigger Finger",
+              "type": "text",
+              "before": {
+                "value": "—"
+              },
+              "after": {
+                "value": "Samira Q is now properly sealed during her passive."
+              }
+            },
+            {
+              "stat": "Can't Out-Walk Me",
+              "type": "text",
+              "before": {
+                "value": "—"
+              },
+              "after": {
+                "value": "Samira Q will now do a check to see if the enemy is walking away from her."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Taliyah",
+      "role": "Mid",
+      "verdict": "ADJUSTED",
+      "icon": "https://am-a.akamaihd.net/image?f=https://ddragon.leagueoflegends.com/cdn/16.4.1/img/champion/Taliyah.png",
+      "context": "Taliyah's powerful wave control in the early mid lane game means she consistently gets to be the first mid laner to every scuttle fight.",
+      "changes": [
+        {
+          "ability": "Q - Threaded Volley",
+          "stats": [
+            {
+              "stat": "Base Damage",
+              "type": "aligned_series",
+              "unit": null,
+              "before": {
+                "values": [
+                  "55",
+                  "72.5",
+                  "90",
+                  "107.5",
+                  "125"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              },
+              "after": {
+                "values": [
+                  "50",
+                  "67.5",
+                  "85",
+                  "102.5",
+                  "120"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            },
+            {
+              "stat": "Bonus Monster Damage",
+              "type": "aligned_series",
+              "unit": null,
+              "before": {
+                "values": [
+                  "20",
+                  "25",
+                  "30",
+                  "35",
+                  "40"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              },
+              "after": {
+                "values": [
+                  "23",
+                  "28",
+                  "33",
+                  "38",
+                  "43"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Varus",
+      "role": "Bot",
+      "verdict": "ADJUSTED",
+      "icon": "https://am-a.akamaihd.net/image?f=https://ddragon.leagueoflegends.com/cdn/16.4.1/img/champion/Varus.png",
+      "context": "Oh, Varus. We're nerfing Varus's lethality build as it's the most pro-dominant ADC in the bot lane.",
+      "changes": [
+        {
+          "ability": "Q - Piercing Arrow",
+          "stats": [
+            {
+              "stat": "Maximum damage",
+              "type": "aligned_series",
+              "unit": null,
+              "before": {
+                "values": [
+                  "80",
+                  "160",
+                  "240",
+                  "320",
+                  "400"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              },
+              "after": {
+                "values": [
+                  "80",
+                  "150",
+                  "220",
+                  "290",
+                  "360"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "ability": "W - Blighted Quiver",
+          "stats": [
+            {
+              "stat": "On-hit damage",
+              "type": "aligned_series",
+              "unit": null,
+              "before": {
+                "values": [
+                  "8",
+                  "17",
+                  "26",
+                  "35",
+                  "44"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              },
+              "after": {
+                "values": [
+                  "8",
+                  "17",
+                  "26",
+                  "35",
+                  "44"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            },
+            {
+              "stat": "On-hit damage (ratio)",
+              "type": "text",
+              "before": {
+                "value": "+ 25% AP"
+              },
+              "after": {
+                "value": "+ 25% AP + 15% bonus AD"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Volibear",
+      "role": "Top / Jungle",
+      "verdict": "BUFF",
+      "icon": "https://am-a.akamaihd.net/image?f=https://ddragon.leagueoflegends.com/cdn/16.4.1/img/champion/Volibear.png",
+      "context": "Volibear's last set of nerfs were effective at hitting jungle harder than top lane. We're aiming to make laning a bit more satisfying for top Volibear with mana changes.",
+      "changes": [
+        {
+          "ability": "Q - Thundering Smash",
+          "stats": [
+            {
+              "stat": "Bonus physical damage",
+              "type": "scalar",
+              "unit": "%",
+              "before": {
+                "value": "+140%"
+              },
+              "after": {
+                "value": "+160%"
+              },
+              "delta": "+20%"
+            }
+          ]
+        },
+        {
+          "ability": "W - Frenzied Maul",
+          "stats": [
+            {
+              "stat": "Mana cost",
+              "type": "aligned_series",
+              "unit": null,
+              "before": {
+                "values": [
+                  "30",
+                  "35",
+                  "40",
+                  "45",
+                  "50"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              },
+              "after": {
+                "values": [
+                  "20",
+                  "25",
+                  "30",
+                  "35",
+                  "40"
+                ],
+                "breakpoint_type": "spell_rank",
+                "breakpoints": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            },
+            {
+              "stat": "Wounded bonus",
+              "type": "text",
+              "before": {
+                "value": "+ 15% per 100 bonus AD"
+              },
+              "after": {
+                "value": "+ 25% per 100 bonus AD"
+              }
+            }
+          ]
+        },
+        {
+          "ability": "E - Sky Splitter",
+          "stats": [
+            {
+              "stat": "Mana cost",
+              "type": "scalar",
+              "unit": null,
+              "before": {
+                "value": "60"
+              },
+              "after": {
+                "value": "50"
+              },
+              "delta": "-10"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "name": "Hubris",
+      "category": "AD Assassin",
+      "verdict": "BUFF",
+      "context": "Hubris appears to be the weakest AD assassin item. We're continuing the slow and steady trend of letting assassins spike their items earlier.",
+      "changes": [
+        {
+          "stat": "Combine cost",
+          "type": "scalar",
+          "unit": "gold",
+          "before": {
+            "value": "950 gold"
+          },
+          "after": {
+            "value": "750 gold"
+          },
+          "delta": "-200gold"
+        },
+        {
+          "stat": "Total price",
+          "type": "scalar",
+          "unit": "gold",
+          "before": {
+            "value": "3000 gold"
+          },
+          "after": {
+            "value": "2800 gold"
+          },
+          "delta": "-200gold"
+        }
+      ]
+    },
+    {
+      "name": "Locket of the Iron Solari",
+      "category": "Support Tank",
+      "verdict": "ADJUSTED",
+      "context": "Bandlepipes has been a well received addition for first-slot support tanks but it's overshadowing first-slot Locket more than we'd like.",
+      "changes": [
+        {
+          "stat": "SHIELD",
+          "type": "text",
+          "before": {
+            "value": "200 - 360, scaling after level 1"
+          },
+          "after": {
+            "value": "290 - 360, scaling after level 8"
+          }
+        },
+        {
+          "stat": "Functional Shield Level 8-18",
+          "type": "text",
+          "before": {
+            "value": "265 - 360"
+          },
+          "after": {
+            "value": "290 - 360"
+          }
+        }
+      ]
+    }
+  ],
+  "systems": [
+    {
+      "name": "Brawl Returns",
+      "category": "Modes",
+      "summary": "Brawl is back, baby! Grab your friends, grab your enemies, they're brawling everybody out here! Brawl will be live from March 4, 2026 through April 28, 2026."
+    },
+    {
+      "name": "Act 2 Battle Pass",
+      "category": "Battle Pass",
+      "summary": "The Season 1 Act 2 Battle Pass is live this patch! Corrupted Petricite Maokai and Corrupted Petricite Xerath are rewards for levels 9 and 25, respectively."
+    },
+    {
+      "name": "Ranked and Matchmaking: Aegis of Valor",
+      "category": "Ranked",
+      "summary": "Players who were eligible for the Aegis of Valor rewards have those rewards voided if they're reported for disruptive behaviors and the reports are validated."
+    },
+    {
+      "name": "Ranked and Matchmaking: Autofill and Secondary Matchmaking Improvements",
+      "category": "Ranked",
+      "summary": "As we mentioned at the start of this year, we're going to start rolling out improved positional matchups in game for autofills and secondaries, e.g. trying to match autofill jungle vs autofill jungle."
+    },
+    {
+      "name": "Ranked and Matchmaking",
+      "category": "Ranked",
+      "summary": "Players who were eligible for the Aegis of Valor rewards have those rewards voided if they're reported for disruptive behaviors and the reports are validated. As we mentioned at the start of this year, we're going to start rolling out improved positional matchups in game for autofills and secondarie"
+    },
+    {
+      "name": "ARAM: Mayhem",
+      "category": "ARAM",
+      "summary": "Hello Mayhem enjoyers! In this patch, we're focusing on tank experience improvements."
+    },
+    {
+      "name": "Arena",
+      "category": "Arena",
+      "summary": "Hey Arena lovers! We have a handful of bugfixes this patch."
+    },
+    {
+      "name": "Last Hit Indicators",
+      "category": "Gameplay",
+      "summary": "After a very long time on PBE, we're excited to bring Last Hit Indicators live!"
+    },
+    {
+      "name": "Gameplay Bans for Severely Disruptive Chat",
+      "category": "Gameplay",
+      "summary": "We're going to start issuing gameplay bans for severely disruptive comms, rather than just chat bans."
+    },
+    {
+      "name": "Skins: Returning Sanctum Item",
+      "category": "Modes",
+      "summary": "This patch, Peacemaker High Noon Yone will be returning to The Sanctum."
+    },
+    {
+      "name": "Skins",
+      "category": "Cosmetics",
+      "summary": "This patch, Peacemaker High Noon Yone will be returning to The Sanctum."
+    },
+    {
+      "name": "Bugfixes & QoL Changes",
+      "category": "Bugfixes",
+      "summary": "Bugfixes & QoL Changes"
+    }
+  ]
+}

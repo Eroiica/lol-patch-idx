@@ -1,0 +1,20 @@
+{
+  "name": "lol-patch-idx",
+  "version": "2.0.0",
+  "description": "League of Legends Patch Notes Parser — DOM → Block → AST → Interpret pipeline",
+  "main": "src/interpret/index.js",
+  "bin": {
+    "parse-patch": "./cli/parsePatch.js"
+  },
+  "scripts": {
+    "parse": "node cli/parsePatch.js",
+    "test": "node --test test/*.test.js",
+    "test:verbose": "node --test --test-reporter=spec test/*.test.js",
+    "debug": "node cli/parsePatch.js --debug"
+  },
+  "keywords": ["league-of-legends", "patch-notes", "parser", "ast"],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

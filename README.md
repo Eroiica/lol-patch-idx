@@ -8,6 +8,110 @@ League of Legends Patch Notes Parser — DOM→Block→AST→Interpret pipeline
 Markdown/HTML → markdownToBlocks/domToBlocks → blocksToAst → interpretPatch → PatchData JSON
 ```
 
+Build repo against https://www.leagueoflegends.com/en-us/news/tags/patch-notes/
+
+Investigate tags: 'GAME UPDATES' => Patch Page
+
+Test against last 12 patches:
+
+Patch Notes
+
+Game Updates
+
+3/3/2026
+
+League of Legends Patch 26.5 Notes
+
+Welcome to the official patch of First Stand, the first major international tournament of the year!
+
+Game Updates
+
+2/18/2026
+
+League of Legends Patch 26.4 Notes
+
+Happy Lunar Revel, welcome to patch 26.4!
+
+Game Updates
+
+2/3/2026
+
+Patch 26.3 Notes
+
+Celebrate the new year and revel in Patch 26.3 🎊
+
+Game Updates
+
+1/21/2026
+
+Patch 26.2 Notes
+
+Patch 26.2 ready to deploy!
+
+Game Updates
+
+1/7/2026
+
+Patch 26.1 Notes
+
+Demacia rises in Patch 26.1 🛡️
+
+Game Updates
+
+12/2/2025
+
+Patch 25.24 Notes
+
+The last patch of the year, 25.24 is here!
+
+Game Updates
+
+11/18/2025
+
+Patch 25.23 Notes
+
+Patch 25.23 has ascended 🙏
+
+Game Updates
+
+11/4/2025
+
+Patch 25.22 Notes
+
+We’re going to Chengdu with Patch 25.22!
+
+Game Updates
+
+10/21/2025
+
+Patch 25.21 Notes
+
+Patch 25.21 is bee-autiful! 🐝
+
+Game Updates
+
+10/7/2025
+
+Patch 25.20 Notes
+
+Get ready for Worlds with patch 25.20!
+
+Game Updates
+
+9/23/2025
+
+Patch 25.19 Notes
+
+Your fate is sealed in Patch 25.19.
+
+Game Updates
+
+9/9/2025
+
+Patch 25.18 Notes
+
+Celebrate patch 25.18 with our ‘24 World’s Winners, T1!
+
 ## Read
 
 [LOL.PATCH.NOTES.READ.md](LOL.PATCH.NOTES.READ.md)

@@ -103,6 +103,44 @@ Before/After now stack vertically — Before on top (red, strikethrough), After 
 Slash-separated values break into individual level-indexed columns with a small rank number (1, 2, 3...) above each value
 Non-slash values (single values) display inline with the stat name in a compact vertical stack
 Removed the old 3-column Stat/Before/After headers since the layout is now self-describing
-DoneUpdated. Two changes:
+
+Done
+
+Updated.
+
+Two changes:
+
 Vertical stacking — Before (red, struck-through) sits on top, After (green) directly below it. Single-value stats stack inline next to the stat name; multi-level stats get a bordered sub-block.
+
 Slash breaking — Any value with / separators splits into individual columns, each with a small level index (1, 2, 3…) above it so you can scan rank-by-rank. Expand any champion like Lillia R or Garen Q to see it in action.
+
+---
+
+Full rewrite incoming — implementing the alignment parser schema with breakpoint-typed series, per-cell deltas, and normalized values.
+
+The user prompt is empty, so there is no primary language to identify. 
+
+I cannot provide a meaningful summary without a user prompt to referenceThe user prompt is empty, so there is no primary language to identify. I cannot provide a meaningful summary without a user prompt to referenceFull rewrite with alignment parser architecture from SEARCH doc — breakpoint-aware data model, per-cell deltas, value normalization, typed series renderingpatch-parser.jsx
+
+Need to delete or use bash to overwrite.Remove old file to rewriteScript
+
+Now create the new file.Full rewrite with alignment parser architecture — breakpoint-aware data model, per-cell deltas, value normalization, typed series renderingpatch-parser.jsx
+
+Done. Let me present it.Presented fileLet me give a concise summary of what changed.
+
+Done
+
+Full rewrite implementing the alignment parser architecture from your SEARCH doc.
+
+Key upgrades:
+Data model — Every stat is now typed as aligned_series, scalar, or text.
+
+Aligned series carry before/after objects with explicit values[], breakpoint_type (spell_rank, champion_level, game_time), and breakpoints[] arrays. No more raw slash strings.
+
+Alignment grid — CSS Grid renders columns with proper breakpoint labels: R1–R5 for spell ranks, Lv1/Lv7/Lv10... for champion levels, 0:00/8:00... for game time. Before/After/Delta stack as aligned rows in a true table.
+
+Per-cell deltas — computeDeltas() with normalizeValueToken() (handles .9s → 0.9 edge case from the doc) computes individual rank diffs. Each cell gets green/red coloring.
+
+Breakpoint mismatch — Akali's W now shows the TIME ⇒ LEVEL transition badge with separate breakpoint header rows for before and after. Varus Q bAD ratio shows the flattening with per-rank deltas exposing the R1 buff / R4-5 nerf split.
+
+Compound stats decomposed — Varus Q split into Max Damage (base) and Max Damage (bAD ratio) as separate aligned series instead of one jammed string.

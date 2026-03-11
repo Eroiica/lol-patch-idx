@@ -16,6 +16,10 @@ Markdown/HTML → markdownToBlocks/domToBlocks → blocksToAst → interpretPatc
 
 [LOL.PATCH.NOTES.SEARCH.md](LOL.PATCH.NOTES.SEARCH.md)
 
+## Parse
+
+[LOL.PATCH.NOTES.PARSE.md](LOL.PATCH.NOTES.PARSE.md)
+
 ## Display
 
 | Curated Snapshots | Patch Descriptions | Explicit Permissions | Priority |

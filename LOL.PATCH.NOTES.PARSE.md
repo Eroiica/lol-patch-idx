@@ -1,4 +1,4 @@
-Analyzed architectural patterns to enhance parser design
+## Analyzed architectural patterns to enhance parser design
 Analyzed architectural patterns to enhance parser design
 The user uploaded two files. Let me check what's in them - one seems to be a search file and the other is a read/history file documenting our conversation so far. Let me look at the search file to see if there's new content or instructions.
 

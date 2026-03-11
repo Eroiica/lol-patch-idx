@@ -1,17 +1,24 @@
 > LEAGUE CHAMP,STATS,ABILITIES,ITEMS,SYSTEMS PARSER 
+
 Root: https://www.leagueoflegends.com/en-us/news/tags/patch-notes/
+
 Individual: https://www.leagueoflegends.com/en-us/news/game-updates/league-of-legends-patch-26-5-notes/
 
 ## Architecting parser for League patch notes extraction
 
 Architecting parser for League patch notes extraction
-The user wants me to build a parser for League of Legends patch notes. Let me understand what they're asking for:
+
+The user wants me to build a parser for League of Legends patch notes. 
+
+## Let me understand what they're asking for
 
 They want to parse League of Legends patch notes from the official website
-They want to extract: Champions, Stats, Abilities, Items, and Systems changes
-They've provided the root URL for patch notes and an example individual patch note URL
 > Let me first check if there are any relevant skills, then fetch the patch notes page to understand the structure before building the parser.
+
+They want to extract: Champions, Stats, Abilities, Items, and Systems changes
 > Let me start by fetching the actual patch notes page to understand the HTML structure.
+
+They've provided the root URL for patch notes and an example individual patch note URL
 > Let me grab the patch notes page first to understand the structure, then build the parser.
 
 ## Architected game-inspired parser for League patch data visualization
